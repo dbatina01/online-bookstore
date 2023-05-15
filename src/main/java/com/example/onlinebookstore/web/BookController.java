@@ -2,7 +2,10 @@ package com.example.onlinebookstore.web;
 
 import com.example.onlinebookstore.api.BooksApi;
 import com.example.onlinebookstore.api.model.Book;
+import com.example.onlinebookstore.api.model.Order;
 import com.example.onlinebookstore.service.InventoryService;
+import com.example.onlinebookstore.service.OrderService;
+import com.example.onlinebookstore.validator.OrderValidator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -16,10 +19,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class BookController implements BooksApi {
 
   private final InventoryService inventoryService;
+  private final OrderService orderService;
+  private final OrderValidator orderValidator;
   private final ModelMapper modelMapper;
 
   public ResponseEntity<List<Book>> retrieveAssortmentOfBooks() {
     return ResponseEntity.ok(inventoryService.retrieveAvailableBooks().stream().map(book -> modelMapper.map(book, Book.class)).toList());
+  }
+
+  @Override
+  public ResponseEntity<Order> placeAnOrder(List<Long> bookIds) {
+    orderValidator.validateRequestedBooks(bookIds);
+    return ResponseEntity.ok(modelMapper.map(orderService.submitOrder(bookIds), Order.class));
   }
 
 }

@@ -17,6 +17,25 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Book"
+  /books/order:
+    post:
+      description: Place an order of books by given IDs
+      operationId: placeAnOrder
+      parameters:
+        - in: query
+          name: bookIds
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+      responses:
+        '200':
+          description: Successfully placed order
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
 components:
   schemas:
     Book:
@@ -31,4 +50,11 @@ components:
         bookType:
           type: string
         basePrice:
+          type: number
+    Order:
+      type: object
+      properties:
+        totalBooks:
+          type: number
+        totalPrice:
           type: number

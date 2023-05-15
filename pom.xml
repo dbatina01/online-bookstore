@@ -148,6 +148,8 @@
                 <useBeanValidation>true</useBeanValidation>
                 <generateAliasAsModel>true</generateAliasAsModel>
                 <openApiNullable>false</openApiNullable>
+                <skipDefaultInterface>true</skipDefaultInterface>
+                <generateSupportingFiles>false</generateSupportingFiles>
               </configOptions>
               <apiPackage>com.example.onlinebookstore.api</apiPackage>
               <modelPackage>com.example.onlinebookstore.api.model</modelPackage>

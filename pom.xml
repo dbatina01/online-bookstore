@@ -13,10 +13,21 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>online-bookstore</name>
   <description>online-bookstore</description>
+
   <properties>
     <java.version>17</java.version>
     <testcontainers.version>1.18.1</testcontainers.version>
+    <openapi-generator-maven-plugin.version>6.4.0</openapi-generator-maven-plugin.version>
+    <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
+    <servlet-api.version>2.5</servlet-api.version>
+    <modelmapper.version>3.1.1</modelmapper.version>
+    <swagger-annotations.version>2.2.9</swagger-annotations.version>
+    <validation-api.version>2.0.1.Final</validation-api.version>
+    <hibernate-validator.version>8.0.0.Final</hibernate-validator.version>
+    <javax.annotation-api.version>1.3.2</javax.annotation-api.version>
+    <springdoc-openapi-starter-webmvc-ui.version>2.0.4</springdoc-openapi-starter-webmvc-ui.version>
   </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -30,7 +41,6 @@
       <groupId>org.flywaydb</groupId>
       <artifactId>flyway-core</artifactId>
     </dependency>
-
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -56,7 +66,44 @@
       <artifactId>postgresql</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>${servlet-api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.swagger.core.v3</groupId>
+      <artifactId>swagger-annotations</artifactId>
+      <version>${swagger-annotations.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>${validation-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate-validator.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>${javax.annotation-api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.modelmapper</groupId>
+      <artifactId>modelmapper</artifactId>
+      <version>${modelmapper.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+    </dependency>
   </dependencies>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -82,6 +129,51 @@
             </exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>${openapi-generator-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>${project.basedir}/src/main/resources/online-bookstore-api.yml</inputSpec>
+              <generatorName>spring</generatorName>
+              <configOptions>
+                <dateLibrary>java8</dateLibrary>
+                <interfaceOnly>true</interfaceOnly>
+                <useBeanValidation>true</useBeanValidation>
+                <generateAliasAsModel>true</generateAliasAsModel>
+                <openApiNullable>false</openApiNullable>
+              </configOptions>
+              <apiPackage>com.example.onlinebookstore.api</apiPackage>
+              <modelPackage>com.example.onlinebookstore.api.model</modelPackage>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <includes>
+            <include>*Test.java</include>
+            <include>*Tests.java</include>
+            <include>*Should.java</include>
+          </includes>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

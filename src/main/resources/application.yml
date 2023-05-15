@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/online-bookstore
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+  sql:
+    init:
+      mode: always

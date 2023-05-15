@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:latest
+    container_name: 'online-bookstore-postgres'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'online-bookstore'
+    ports:
+      - '5432:5432'

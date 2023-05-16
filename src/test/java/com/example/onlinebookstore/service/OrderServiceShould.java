@@ -1,5 +1,7 @@
 package com.example.onlinebookstore.service;
 
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.example.onlinebookstore.entity.Book;
@@ -22,14 +24,18 @@ public class OrderServiceShould {
   @Mock
   private BookRepository bookRepository;
 
+  @Mock
+  private LoyaltyPointsService loyaltyPointsService;
+
   @BeforeEach
   public void setUp() {
-    this.orderService = new OrderServiceImpl(bookRepository);
+    this.orderService = new OrderServiceImpl(bookRepository, loyaltyPointsService);
   }
 
   @Test
   public void submit_order() {
     // given
+    final var customer = "customer";
     final var bookIds = List.of(1L, 2L, 3L);
     final var books = List.of(
         Book.builder()
@@ -58,11 +64,12 @@ public class OrderServiceShould {
     final var expectedTotalPrice = books.get(0).getBasePrice() + (books.get(1).getBasePrice() * 0.8 * 0.95) + (books.get(2).getBasePrice() * 0.9);
 
     // when
-    final var response = orderService.submitOrder(bookIds);
+    final var response = orderService.submitOrder(bookIds, customer);
 
     // then
     Assertions.assertEquals(expectedTotalBooks, response.getTotalBooks());
     Assertions.assertEquals(expectedTotalPrice, response.getTotalPrice());
+    verify(loyaltyPointsService, times(1)).increasePoints(expectedTotalBooks, customer);
   }
 
 }

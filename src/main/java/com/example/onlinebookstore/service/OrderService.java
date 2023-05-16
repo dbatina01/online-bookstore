@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface OrderService {
 
-  Order submitOrder(List<Long> bookIds);
+  Order submitOrder(List<Long> bookIds, String username);
 
 }

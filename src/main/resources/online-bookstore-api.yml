@@ -36,6 +36,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Order"
+  /books/loyalty-points/overview:
+    get:
+      description: Retrieve loyalty points earned by current customer.
+      operationId: retrieveLoyaltyPoints
+      responses:
+        '200':
+          description: Successfully retrieved loyalty points
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyPointsBalance"
+  /books/loyalty-points/order:
+    post:
+      description: Use loyalty points to get a book for free.
+      operationId: useLoyaltyPoints
+      parameters:
+        - in: query
+          name: bookId
+          schema:
+            type: integer
+            format: int64
+          required: true
+      responses:
+        '200':
+          description: Successfully used loyalty points
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoyaltyPointsBalance"
 components:
   schemas:
     Book:
@@ -58,3 +87,10 @@ components:
           type: number
         totalPrice:
           type: number
+    LoyaltyPointsBalance:
+      type: object
+      properties:
+        username:
+          type: string
+        loyaltyPoints:
+          type: string
